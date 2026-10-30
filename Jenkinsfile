@@ -7,42 +7,36 @@ pipeline {
     }
 
     stages {
-
         stage('Checkout') {
             steps {
-                checkout scm
-                echo 'Source code checked out from GitHub'
+                git branch: 'main',
+                    url: 'https://github.com/vineelagera123-blip/PythonCICD.git'
             }
         }
 
-        stage('Compilation') {
+        stage('Compile') {
             steps {
                 bat '"C:\\Users\\vinee\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m py_compile app.py'
-                echo 'Python syntax check completed'
             }
         }
 
-        stage('Testing') {
+        stage('Test') {
             steps {
-                bat '"C:\\Users\\vinee\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m unittest test_app.py'
+                bat '"C:\\Users\\vinee\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m unittest -v'
             }
         }
 
-        stage('Packaging') {
+        stage('Package') {
             steps {
-                bat 'powershell.exe -NoProfile -Command "Compress-Archive -Path app.py,test_app.py -DestinationPath python-app.zip -Force"'
+                bat '"C:\\Users\\vinee\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m zipfile -c python-app.zip app.py test_app.py'
             }
         }
     }
 
     post {
         success {
-            archiveArtifacts artifacts: 'python-app.zip'
-            echo 'Python CI/CD Pipeline completed successfully!'
-        }
-
-        failure {
-            echo 'Pipeline failed!'
+            archiveArtifacts artifacts: 'python-app.zip',
+                             fingerprint: true
         }
     }
 }
