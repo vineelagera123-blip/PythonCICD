@@ -17,14 +17,14 @@ pipeline {
 
         stage('Compilation') {
             steps {
-                bat 'python -m py_compile app.py'
+                bat '"C:\\Users\\vinee\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m py_compile app.py'
                 echo 'Python syntax check completed'
             }
         }
 
         stage('Testing') {
             steps {
-                bat 'python -m unittest test_app.py'
+                bat '"C:\\Users\\vinee\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m unittest test_app.py'
             }
         }
 
